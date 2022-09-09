@@ -1,4 +1,5 @@
 using Kern.Internal.Authorization.Metadatas;
+using Microsoft.AspNetCore.Builder;
 
 namespace Kern.Internal.Authorization.Extensions;
 

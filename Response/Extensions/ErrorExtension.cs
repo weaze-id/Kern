@@ -1,4 +1,5 @@
 using Kern.Internal.Error;
+using Microsoft.AspNetCore.Http;
 
 namespace Kern.Internal.Response.Extensions;
 

@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+
 namespace Kern.Internal.Utility;
 
 public class PathUtil

@@ -1,4 +1,6 @@
 using Kern.Internal.Response;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using ILogger = Serilog.ILogger;
 
 namespace Kern.Internal.Middlewares;

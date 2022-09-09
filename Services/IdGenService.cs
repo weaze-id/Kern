@@ -1,4 +1,5 @@
 using IdGen;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Kern.Internal.Services;
 

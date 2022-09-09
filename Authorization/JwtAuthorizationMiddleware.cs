@@ -2,6 +2,8 @@ using System.Security.Claims;
 using Kern.Internal.Authorization.Extensions;
 using Kern.Internal.Authorization.Metadatas;
 using Kern.Internal.Response;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 
 namespace Kern.Internal.Authorization;
 

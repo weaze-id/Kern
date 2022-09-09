@@ -1,4 +1,5 @@
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
 
 namespace Kern.Internal.Response.Extensions;
 

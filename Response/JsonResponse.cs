@@ -1,4 +1,5 @@
 using Kern.Internal.Response.Dtos;
+using Microsoft.AspNetCore.Http;
 
 namespace Kern.Internal.Response;
 
