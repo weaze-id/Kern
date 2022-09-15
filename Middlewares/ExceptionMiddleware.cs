@@ -1,7 +1,7 @@
 using Kern.Response;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using ILogger = Serilog.ILogger;
+using Serilog;
 
 namespace Kern.Middlewares;
 
