@@ -31,8 +31,9 @@ public static class ModuleExtensions
 
     private static IEnumerable<IModule> DiscoverModules()
     {
-        return typeof(IModule).Assembly
-            .GetTypes()
+        var type = typeof(IModule);
+        return AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(e => e.GetTypes())
             .Where(p => p.IsClass && p.IsAssignableTo(typeof(IModule)))
             .Select(Activator.CreateInstance)
             .Cast<IModule>();
