@@ -1,4 +1,4 @@
-namespace Kern.Internal.Extensions;
+namespace Kern.Extensions;
 
 public static class StringExtensions
 {

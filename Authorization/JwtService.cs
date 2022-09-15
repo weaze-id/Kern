@@ -3,7 +3,7 @@ using System.Security.Claims;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Kern.Internal.Authorization;
+namespace Kern.Authorization;
 
 public class JwtService
 {

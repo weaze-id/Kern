@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace Kern.Internal.Authorization;
+namespace Kern.Authorization;
 
 public interface IJwtIdentity
 {

@@ -1,7 +1,7 @@
-using Kern.Internal.Response.Dtos;
+using Kern.Response.Dtos;
 using Microsoft.AspNetCore.Http;
 
-namespace Kern.Internal.Response;
+namespace Kern.Response;
 
 public static class JsonResponse
 {

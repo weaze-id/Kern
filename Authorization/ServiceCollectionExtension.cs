@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Kern.Internal.Authorization;
+namespace Kern.Authorization;
 
 public static class ServiceCollectionExtension
 {

@@ -1,4 +1,4 @@
-namespace Kern.Internal.Response.Dtos;
+namespace Kern.Response.Dtos;
 
 public class ResponseDataDto<T>
 {

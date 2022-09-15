@@ -1,4 +1,4 @@
-namespace Kern.Internal.Error;
+namespace Kern.Error;
 
 public class BadRequestError : ErrorBase
 {

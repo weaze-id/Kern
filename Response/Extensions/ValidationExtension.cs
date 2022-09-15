@@ -1,7 +1,7 @@
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 
-namespace Kern.Internal.Response.Extensions;
+namespace Kern.Response.Extensions;
 
 public static class ValidationExtension
 {

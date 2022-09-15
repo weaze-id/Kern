@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
-namespace Kern.Internal.Services;
+namespace Kern.Services;
 
 public static class SwaggerService
 {

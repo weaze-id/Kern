@@ -1,4 +1,4 @@
-namespace Kern.Internal.Authorization.Metadatas;
+namespace Kern.Authorization.Metadatas;
 
 public class AudienceMetadata
 {

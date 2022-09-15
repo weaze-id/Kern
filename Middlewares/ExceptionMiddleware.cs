@@ -1,9 +1,9 @@
-using Kern.Internal.Response;
+using Kern.Response;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using ILogger = Serilog.ILogger;
 
-namespace Kern.Internal.Middlewares;
+namespace Kern.Middlewares;
 
 public class ExceptionMiddleware
 {

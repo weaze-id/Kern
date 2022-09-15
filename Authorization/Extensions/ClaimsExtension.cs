@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace Kern.Internal.Authorization.Extensions;
+namespace Kern.Authorization.Extensions;
 
 public static class ClaimsExtension
 {

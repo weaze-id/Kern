@@ -1,7 +1,7 @@
-using Kern.Internal.Error;
+using Kern.Error;
 using Microsoft.AspNetCore.Http;
 
-namespace Kern.Internal.Response.Extensions;
+namespace Kern.Response.Extensions;
 
 public static class ErrorExtension
 {

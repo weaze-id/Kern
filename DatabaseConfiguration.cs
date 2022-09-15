@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 
-namespace Kern.Internal;
+namespace Kern;
 
 public static class DatabaseConfiguration
 {

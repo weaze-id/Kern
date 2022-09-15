@@ -1,11 +1,11 @@
 using System.Security.Claims;
-using Kern.Internal.Authorization.Extensions;
-using Kern.Internal.Authorization.Metadatas;
-using Kern.Internal.Response;
+using Kern.Authorization.Extensions;
+using Kern.Authorization.Metadatas;
+using Kern.Response;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace Kern.Internal.Authorization;
+namespace Kern.Authorization;
 
 public static class JwtAuthorizationMiddleware
 {

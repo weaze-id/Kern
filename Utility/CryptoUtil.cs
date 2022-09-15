@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Kern.Internal.Utility;
+namespace Kern.Utility;
 
 public static class CryptoUtil
 {

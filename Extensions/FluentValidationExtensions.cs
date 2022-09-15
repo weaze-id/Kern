@@ -1,7 +1,7 @@
 using System.Data.SqlTypes;
 using FluentValidation;
 
-namespace Kern.Internal.Extensions;
+namespace Kern.Extensions;
 
 public static class FluentValidationExtensions
 {

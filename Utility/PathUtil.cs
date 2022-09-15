@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace Kern.Internal.Utility;
+namespace Kern.Utility;
 
 public class PathUtil
 {

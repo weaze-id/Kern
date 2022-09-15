@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Kern.Internal.Module;
+namespace Kern.Module;
 
 public static class ModuleExtensions
 {

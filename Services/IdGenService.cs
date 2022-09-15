@@ -1,7 +1,7 @@
 using IdGen;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Kern.Internal.Services;
+namespace Kern.Services;
 
 public static class IdGenService
 {
