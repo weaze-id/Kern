@@ -125,4 +125,19 @@ public static class JsonResponse
                 Errors = errors
             }, statusCode: 500);
     }
+
+    /// <summary>Show service unavailable response.</summary>
+    /// <param name="message">Response message.</param>
+    /// <param name="errors">Response errors.</param>
+    /// <returns>Http response.</returns>
+    public static IResult ServiceUnavailable(string? message = null, object? errors = null)
+    {
+        return Results.Json(errors == null
+            ? new ResponseDto { Message = message ?? ServerErrorMessage }
+            : new ResponseErrorDto
+            {
+                Message = message ?? ServerErrorMessage,
+                Errors = errors
+            }, statusCode: 509);
+    }
 }

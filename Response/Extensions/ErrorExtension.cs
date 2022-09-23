@@ -14,6 +14,7 @@ public static class ErrorExtension
             BadRequestError => JsonResponse.BadRequest(error.Message),
             ConflictError => JsonResponse.Conflict(error.Message),
             NotFoundError => JsonResponse.NotFound(error.Message),
+            ServiceUnavailableError => JsonResponse.ServiceUnavailable(error.Message),
             _ => JsonResponse.ServerError(error.Message)
         };
     }
