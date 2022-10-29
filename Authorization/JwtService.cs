@@ -38,7 +38,6 @@ public class JwtService
     /// <returns>Decoded jwt string.</returns>
     public IEnumerable<Claim>? Decode(string jwt)
     {
-        // Validate bearer token.
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenValidationParameters = new TokenValidationParameters
         {

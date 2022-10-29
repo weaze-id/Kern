@@ -65,12 +65,6 @@ For every call to the API you must include your access token in the Authorizatio
 
     public static WebApplication UseSwagger(this WebApplication app, string title)
     {
-        var enableApiDocumentation = bool.TryParse(app.Configuration["EnableApiDocumentation"], out _);
-        if (!enableApiDocumentation)
-        {
-            return app;
-        }
-
         app.UseSwagger();
         app.UseReDoc(c =>
         {
