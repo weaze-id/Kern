@@ -9,12 +9,11 @@ public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddAuthorization(this IServiceCollection services, IConfiguration configuration)
     {
-        var file = File.ReadAllText(configuration["PublicKey"]);
-
-        using var rsa = new RSACryptoServiceProvider();
+        var file = File.ReadAllText(configuration["PrivateKey"]);
+        var rsa = new RSACryptoServiceProvider();
         rsa.ImportFromPem(file);
 
-        services.AddSingleton(_ => new RsaSecurityKey(rsa));
+        services.AddSingleton(new RsaSecurityKey(rsa));
         services.AddScoped<JwtService>();
 
         return services;
