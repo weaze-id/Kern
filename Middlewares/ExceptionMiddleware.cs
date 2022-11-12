@@ -1,23 +1,30 @@
 using Kern.Response;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
-using Serilog;
 
 namespace Kern.Middlewares;
 
 public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly ILogger _serilogger;
+    private readonly IWebHostEnvironment _environtment;
 
-    public ExceptionMiddleware(RequestDelegate next, ILogger serilogger)
+    public ExceptionMiddleware(RequestDelegate next, IWebHostEnvironment environtment)
     {
         _next = next;
-        _serilogger = serilogger;
+        _environtment = environtment;
     }
 
     public async Task InvokeAsync(HttpContext context)
     {
+        if (_environtment.IsDevelopment())
+        {
+            await _next.Invoke(context);
+            return;
+        }
+
         try
         {
             await _next.Invoke(context);
@@ -29,11 +36,9 @@ public class ExceptionMiddleware
             {
                 case BadHttpRequestException:
                     response = JsonResponse.BadRequest();
-                    _serilogger.Information("{Message}", e, DateTime.Now);
                     break;
                 default:
                     response = JsonResponse.ServerError();
-                    _serilogger.Error("{Message}", e, DateTime.Now);
                     break;
             }
 
