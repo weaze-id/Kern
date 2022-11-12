@@ -17,6 +17,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
+    <PackageReference Include="Sentry.AspNetCore" Version="3.23.1" />
   </ItemGroup>
 
 </Project>

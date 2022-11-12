@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
+using Sentry;
 
 namespace Kern.Middlewares;
 
@@ -39,6 +40,8 @@ public class ExceptionMiddleware
                     break;
                 default:
                     response = JsonResponse.ServerError();
+                    SentrySdk.CaptureException(e);
+
                     break;
             }
 
