@@ -25,7 +25,6 @@ public static class CryptoUtil
         var saltedPassword = $"{password}{salt}";
         var saltedPasswordBytes = Encoding.UTF8.GetBytes(saltedPassword);
 
-        using var sha512 = SHA512.Create();
-        return Convert.ToBase64String(sha512.ComputeHash(saltedPasswordBytes));
+        return Convert.ToBase64String(SHA512.HashData(saltedPasswordBytes));
     }
 }

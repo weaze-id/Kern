@@ -10,8 +10,7 @@ public static class SwaggerService
     private const string DESCRIPTION =
         @"# Introduction
 The {{Title}} API follows the general patterns of REST.
-You can use the resources of a {{Title}} account (items, receipts, etc.) 
-by making HTTPS requests to URLs that represent those resources. You can find description of all the endpoints here.
+You can use the resources of a {{Title}} by making HTTPS requests to URLs that represent those resources. You can find description of all the endpoints here.
 
 # Getting Started
 To test and explore {{Title}} API you can use Postman.
