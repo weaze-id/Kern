@@ -54,8 +54,7 @@ public class JwtService
         try
         {
             tokenHandler.ValidateToken(jwt, tokenValidationParameters, out var validatedToken);
-            var jwtSecurityToken = validatedToken as JwtSecurityToken;
-            if (jwtSecurityToken == null)
+            if (validatedToken is not JwtSecurityToken jwtSecurityToken)
             {
                 return null;
             }
