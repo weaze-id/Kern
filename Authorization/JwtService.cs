@@ -1,5 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -8,11 +8,9 @@ namespace Kern.Authorization;
 public class JwtService
 {
     private readonly IConfiguration _configuration;
-    private readonly RsaSecurityKey _rsaSecurityKey;
 
-    public JwtService(RsaSecurityKey rsaSecurityKey, IConfiguration configuration)
+    public JwtService(IConfiguration configuration)
     {
-        _rsaSecurityKey = rsaSecurityKey;
         _configuration = configuration;
     }
 
@@ -21,49 +19,18 @@ public class JwtService
     /// <returns>Encoded JwtIdentity.</returns>
     public string Encode(IJwtIdentity jwtIdentity)
     {
-        var signingCredentials = new SigningCredentials(_rsaSecurityKey, SecurityAlgorithms.RsaSha256);
+        var signingCredentials = new SigningCredentials(
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!)),
+            SecurityAlgorithms.HmacSha512);
 
         var securityToken = new JwtSecurityToken(
             _configuration["Jwt:Issuer"],
-            claims: jwtIdentity.ToClaims(),
-            expires: DateTime.UtcNow.AddDays(1),
+            _configuration["Jwt:Audience"],
+            jwtIdentity.ToClaims(),
+            expires: DateTime.UtcNow.AddSeconds(int.Parse(_configuration["Jwt:ExpiredIn"]!)),
             signingCredentials: signingCredentials
         );
 
         return new JwtSecurityTokenHandler().WriteToken(securityToken);
-    }
-
-    /// <summary>Decode jwt string in JwtIdentity.</summary>
-    /// <param name="jwt">Data to decode.</param>
-    /// <returns>Decoded jwt string.</returns>
-    public IEnumerable<Claim>? Decode(string jwt)
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var tokenValidationParameters = new TokenValidationParameters
-        {
-            ClockSkew = TimeSpan.Zero,
-            RequireSignedTokens = true,
-            RequireExpirationTime = true,
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = _rsaSecurityKey
-        };
-
-        try
-        {
-            tokenHandler.ValidateToken(jwt, tokenValidationParameters, out var validatedToken);
-            if (validatedToken is not JwtSecurityToken jwtSecurityToken)
-            {
-                return null;
-            }
-
-            return jwtSecurityToken.Claims;
-        }
-        catch
-        {
-            return null;
-        }
     }
 }
