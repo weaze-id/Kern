@@ -26,6 +26,13 @@ public static class FluentValidationExtensions
             .WithMessage("{PropertyName} is not a valid phone number.");
     }
 
+    public static IRuleBuilderOptions<T, string?> CustomEmailAddress<T>(this IRuleBuilder<T, string?> ruleBuilder)
+    {
+        return ruleBuilder
+            .EmailAddress()
+            .WithMessage("{PropertyName} is not a valid email address.");
+    }
+
     public static IRuleBuilderOptions<T, string?> Url<T>(this IRuleBuilder<T, string?> ruleBuilder)
     {
         return ruleBuilder
