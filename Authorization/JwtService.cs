@@ -1,5 +1,4 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -8,25 +7,24 @@ namespace Kern.Authorization;
 public class JwtService
 {
     private readonly IConfiguration _configuration;
+    private readonly SecurityKey _securityKey;
 
-    public JwtService(IConfiguration configuration)
+    public JwtService(IConfiguration configuration, SecurityKey securityKey)
     {
         _configuration = configuration;
+        _securityKey = securityKey;
     }
 
     /// <summary>Encode JwtIdentity into jwt string.</summary>
     /// <param name="jwtIdentity">Data to encode.</param>
     /// <returns>Encoded JwtIdentity.</returns>
-    public string Encode(IJwtIdentity jwtIdentity)
+    public string Encode(IJwtIdentity jwtIdentity, string algorithms)
     {
-        var signingCredentials = new SigningCredentials(
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!)),
-            SecurityAlgorithms.HmacSha512);
-
+        var signingCredentials = new SigningCredentials(_securityKey, algorithms);
         var securityToken = new JwtSecurityToken(
-            _configuration["Jwt:Issuer"],
-            _configuration["Jwt:Audience"],
-            jwtIdentity.ToClaims(),
+            issuer: _configuration["Jwt:Issuer"],
+            audience: _configuration["Jwt:Audience"],
+            claims: jwtIdentity.ToClaims(),
             expires: DateTime.UtcNow.AddSeconds(int.Parse(_configuration["Jwt:ExpiredIn"]!)),
             signingCredentials: signingCredentials
         );

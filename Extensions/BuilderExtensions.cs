@@ -10,7 +10,9 @@ public static class BuilderExtensions
 {
     public static WebApplication UseSwaggerDocs(this WebApplication app)
     {
-        _ = app.Map("/docs/swagger.json", async () =>
+        app.UseOutputCache();
+
+        app.Map("/docs/swagger.json", async () =>
         {
             using var fileStream =
                  File.OpenRead(

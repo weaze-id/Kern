@@ -28,6 +28,7 @@ public static class DependencyInjectionExtensions
 
     public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddOutputCache();
         services.AddEndpointsApiExplorer();
         services.AddFluentValidationRulesToSwagger();
         services.AddSwaggerGen(c =>
