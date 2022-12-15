@@ -12,7 +12,7 @@ public static class ModuleExtensions
         var modules = DiscoverModules();
         foreach (var module in modules)
         {
-            module.RegisterModule(services);
+            module.AddServices(services);
             registeredModules.Add(module);
         }
 

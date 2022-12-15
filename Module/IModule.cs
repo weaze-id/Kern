@@ -5,6 +5,6 @@ namespace Kern.Module;
 
 public interface IModule
 {
-    IServiceCollection RegisterModule(IServiceCollection builder);
+    IServiceCollection AddServices(IServiceCollection builder);
     IEndpointRouteBuilder MapEndpoints(IEndpointRouteBuilder endpoints);
 }
