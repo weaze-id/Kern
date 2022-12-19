@@ -9,7 +9,7 @@ public class PermissionHandler : AuthorizationHandler<PermissionRequirement>
         AuthorizationHandlerContext context,
         PermissionRequirement requirement)
     {
-        var userPermissions = context.User.FindFirst(e => e.Type == "permissions")?.Value;
+        var userPermissions = context.User.FindFirst(e => e.Type == "Permissions")?.Value;
         if (userPermissions == null)
         {
             return Task.CompletedTask;
