@@ -10,10 +10,4 @@ public static class AuthorizationOptionsExtensions
         options.AddPolicy($"{permission}_PERMISSION_POLICY",
             policy => policy.Requirements.Add(new PermissionRequirement(permission)));
     }
-
-    public static void AddAudiencesPolicy(this AuthorizationOptions options, params string[] audiences)
-    {
-        options.AddPolicy("AUDIENCE_POLICY", policy => policy.RequireClaim("aud", audiences));
-        options.DefaultPolicy = options.GetPolicy("AUDIENCE_POLICY") ?? options.DefaultPolicy;
-    }
 }
