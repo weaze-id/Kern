@@ -1,3 +1,3 @@
 #! /bin/bash
 
-jb cleanupcode Kern.sln --verbosity=INFO --exclude=lib/**/*
+dotnet jb cleanupcode Kern.sln --verbosity=INFO --exclude=lib/**/*

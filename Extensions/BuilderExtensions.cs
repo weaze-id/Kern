@@ -15,7 +15,7 @@ public static class BuilderExtensions
         app.Map("/docs/swagger.json", async () =>
         {
             using var fileStream =
-                 File.OpenRead(
+                File.OpenRead(
                     Path.Combine(app.Environment.ContentRootPath, "wwwroot", "json", "swagger.json"));
 
             var json = await JsonSerializer.DeserializeAsync<object>(fileStream);

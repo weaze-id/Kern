@@ -22,9 +22,9 @@ public class JwtService
     {
         var signingCredentials = new SigningCredentials(_securityKey, algorithms);
         var securityToken = new JwtSecurityToken(
-            issuer: _configuration["Jwt:Issuer"],
-            audience: _configuration["Jwt:Audience"],
-            claims: jwtIdentity.ToClaims(),
+            _configuration["Jwt:Issuer"],
+            _configuration["Jwt:Audience"],
+            jwtIdentity.ToClaims(),
             expires: DateTime.UtcNow.AddSeconds(int.Parse(_configuration["Jwt:ExpiredIn"]!)),
             signingCredentials: signingCredentials
         );
