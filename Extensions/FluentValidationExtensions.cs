@@ -57,20 +57,36 @@ public static class FluentValidationExtensions
             .WithMessage($"Maximum characters is {maxLength}");
     }
 
-    public static IRuleBuilderOptions<T, decimal?> PrecissionScale<T>(
-        this IRuleBuilder<T, decimal?> ruleBuilder,
+    public static IRuleBuilderOptions<T, decimal> PrecissionScale<T>(
+        this IRuleBuilder<T, decimal> ruleBuilder,
         int precission,
         int scale)
     {
         return ruleBuilder
             .Must(e =>
             {
-                if (e == null)
+                var sqlDecimal = new SqlDecimal(e);
+                var scaleOverflow = 0;
+
+                if (sqlDecimal.Scale > scale)
                 {
-                    return true;
+                    scaleOverflow = sqlDecimal.Scale - scale;
                 }
 
-                var sqlDecimal = new SqlDecimal(e.Value);
+                return sqlDecimal.Precision - scaleOverflow <= precission;
+            })
+            .WithMessage($"{{PropertyName}} must be decimal with precision {precission} and scale {scale}");
+    }
+
+    public static IRuleBuilderOptions<T, decimal?> PrecissionScale<T>(
+       this IRuleBuilder<T, decimal?> ruleBuilder,
+       int precission,
+       int scale)
+    {
+        return ruleBuilder
+            .Must(e =>
+            {
+                var sqlDecimal = new SqlDecimal(e.GetValueOrDefault());
                 var scaleOverflow = 0;
 
                 if (sqlDecimal.Scale > scale)
