@@ -30,6 +30,7 @@ public class S3
             .WithBucket(_options.BucketName)
             .WithObject(objectName)
             .WithStreamData(stream)
+            .WithObjectSize(stream.Length)
             .WithContentType(contentType);
 
         await _minioClient.PutObjectAsync(putObjectArgs).ConfigureAwait(false);
