@@ -184,6 +184,6 @@ public static class JsonResponse
             Type = ServiceUnvailableResponse.Type,
             Title = message ?? ServiceUnvailableResponse.Title,
             Status = 503
-        });
+        }, statusCode: 503);
     }
 }
