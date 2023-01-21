@@ -14,13 +14,8 @@ public class S3
         _options = options.Value;
     }
 
-    public string? GetUrl(string? objectName)
+    public string? GenerateUrl(string objectName)
     {
-        if (objectName == null)
-        {
-            return null;
-        }
-
         return $"{(_options.WithSSL ? "https" : "http")}://{_options.Endpoint}/{_options.BucketName}/{objectName}";
     }
 
