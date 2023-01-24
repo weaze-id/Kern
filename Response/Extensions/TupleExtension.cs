@@ -22,6 +22,17 @@ public static class TupleExtension
         return JsonResponse.Success(data: result);
     }
 
+    public static IResult Response<T>(this (T?, ErrorBase?) tuple) where T : class
+    {
+        var (result, error) = tuple;
+        if (error != null)
+        {
+            return error.Response();
+        }
+
+        return JsonResponse.Success(data: result);
+    }
+
     public static IResult Response(this (ValidationResult?, ErrorBase?) tuple)
     {
         var (validationResult, error) = tuple;
