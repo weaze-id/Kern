@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kern.Controller;
@@ -17,14 +17,14 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static WebApplication MapControllers(this WebApplication app)
+    public static IEndpointRouteBuilder MapControllers(this IEndpointRouteBuilder route)
     {
         for (var i = 0; i < controllers.Count; i++)
         {
             var controller = controllers[i];
-            controller.MapEndpoints(app);
+            controller.MapEndpoints(route);
         }
 
-        return app;
+        return route;
     }
 }

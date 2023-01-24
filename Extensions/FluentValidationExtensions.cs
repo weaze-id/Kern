@@ -79,9 +79,9 @@ public static class FluentValidationExtensions
     }
 
     public static IRuleBuilderOptions<T, decimal?> PrecissionScale<T>(
-       this IRuleBuilder<T, decimal?> ruleBuilder,
-       int precission,
-       int scale)
+        this IRuleBuilder<T, decimal?> ruleBuilder,
+        int precission,
+        int scale)
     {
         return ruleBuilder
             .Must(e =>
