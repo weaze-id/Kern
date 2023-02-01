@@ -8,5 +8,6 @@ public class S3Options
     public required string AccessKey { get; set; }
     public required string SecretKey { get; set; }
     public required string BucketName { get; set; }
+    public required string Directory { get; set; }
     public required bool WithSSL { get; set; }
 }
