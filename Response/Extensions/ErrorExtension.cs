@@ -5,10 +5,11 @@ namespace Kern.Response.Extensions;
 
 public static class ErrorExtension
 {
-    public static IResult Response(this ErrorBase error)
+    public static IResult Response(this ErrorBase? error)
     {
         return error switch
         {
+            null => JsonResponse.Success(),
             AuthenticationError => JsonResponse.Unauthorized(error.Message),
             AuthorizationError => JsonResponse.Forbidden(error.Message),
             BadRequestError => JsonResponse.BadRequest(error.Message),
