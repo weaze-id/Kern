@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Models;
 
 namespace Kern.Extensions;
 
-public static class DependencyInjectionExtensions
+public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddIdGenerator(this IServiceCollection services)
     {

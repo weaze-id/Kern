@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Kern.Extensions;
 
-public static class BuilderExtensions
+public static class WebApplicationExtensions
 {
     public static WebApplication UseSwaggerDocs(this WebApplication app)
     {

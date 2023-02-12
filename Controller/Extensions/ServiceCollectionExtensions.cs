@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Kern.Controller;
+namespace Kern.Controller.Extensions;
 
 public static class ServiceCollectionExtensions
 {
