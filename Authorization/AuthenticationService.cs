@@ -11,10 +11,13 @@ namespace Kern.Authorization;
 public class AuthenticationService
 {
     private readonly IConfiguration _configuration;
-    private readonly SecurityKey _securityKey;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly SecurityKey _securityKey;
 
-    public AuthenticationService(IConfiguration configuration, SecurityKey securityKey, IHttpContextAccessor httpContextAccessor)
+    public AuthenticationService(
+        IConfiguration configuration,
+        SecurityKey securityKey,
+        IHttpContextAccessor httpContextAccessor)
     {
         _configuration = configuration;
         _securityKey = securityKey;
@@ -23,11 +26,13 @@ public class AuthenticationService
 
     public async Task<string> SignInAsync(IIdentity jwtIdentity, string jwtAlgorithm)
     {
-        var claims = jwtIdentity.ToClaims();
         var httpContext = _httpContextAccessor.HttpContext!;
 
-        httpContext.User.AddIdentity(new ClaimsIdentity(claims));
-        await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, httpContext.User);
+        var claims = jwtIdentity.ToClaims();
+        var claimPrincipal = new ClaimsPrincipal();
+        claimPrincipal.AddIdentity(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
+
+        await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimPrincipal);
 
         var signingCredentials = new SigningCredentials(_securityKey, jwtAlgorithm);
         var securityToken = new JwtSecurityToken(

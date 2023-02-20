@@ -16,10 +16,15 @@ public class S3
 
     public string GenerateUrl(string objectName)
     {
-        return $"{(_options.WithSSL ? "https" : "http")}://{_options.Endpoint}/{_options.BucketName}/{Path.Combine(_options.Directory, objectName)}";
+        return
+            $"{(_options.WithSSL ? "https" : "http")}://{_options.Endpoint}/{_options.BucketName}/{Path.Combine(_options.Directory, objectName)}";
     }
 
-    public async Task StoreObject(string objectName, Stream stream, string contentType, Dictionary<string, string>? metadata = null)
+    public async Task StoreObject(
+        string objectName,
+        Stream stream,
+        string contentType,
+        Dictionary<string, string>? metadata = null)
     {
         var putObjectArgs = new PutObjectArgs()
             .WithBucket(_options.BucketName)

@@ -9,25 +9,25 @@ namespace Kern.Authorization.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration, Action<AuthorizationOptions>? authorizationOptions = null)
+    public static IServiceCollection AddAuthorization(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        Action<CookieAuthenticationOptions>? cookieOptions = null,
+        Action<JwtBearerOptions>? jwtOptions = null,
+        Action<AuthorizationOptions>? authorizationOptions = null)
     {
         services.AddHttpContextAccessor();
-        services.AddSingleton<AuthenticationService>();
+        services.AddScoped<AuthenticationService>();
 
-        var multiSchemePolicy = new AuthorizationPolicyBuilder(CookieAuthenticationDefaults.AuthenticationScheme, JwtBearerDefaults.AuthenticationScheme)
-                .RequireAuthenticatedUser()
-                .Build();
+        var multiSchemePolicy = new AuthorizationPolicyBuilder(CookieAuthenticationDefaults.AuthenticationScheme,
+                JwtBearerDefaults.AuthenticationScheme)
+            .RequireAuthenticatedUser()
+            .Build();
 
         services
-            .AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddCookie(options =>
-            {
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-            });
+            .AddAuthentication()
+            .AddJwtBearer()
+            .AddCookie(options => cookieOptions?.Invoke(options));
 
         services.AddAuthorization(options =>
         {
@@ -40,6 +40,7 @@ public static class ServiceCollectionExtensions
             .Configure<SecurityKey>(
                 (options, securityKey) =>
                 {
+                    jwtOptions?.Invoke(options);
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         IssuerSigningKey = securityKey,
