@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 
 namespace Kern.Authorization.Extensions;
 
@@ -23,9 +24,22 @@ public static class ServiceCollectionExtensions
             .Build();
 
         services
-            .AddAuthentication()
+            .AddAuthentication("MULTIPLE_AUTHENTICATION_SCHEME")
             .AddJwtBearer()
-            .AddCookie(options => cookieOptions?.Invoke(options));
+            .AddCookie(options => cookieOptions?.Invoke(options))
+            .AddPolicyScheme("MULTIPLE_AUTHENTICATION_SCHEME", "MULTIPLE_AUTHENTICATION_SCHEME", options =>
+            {
+                options.ForwardDefaultSelector = context =>
+                {
+                    string? authorizationHeader = context.Request.Headers[HeaderNames.Authorization];
+                    if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
+                    {
+                        return JwtBearerDefaults.AuthenticationScheme;
+                    }
+
+                    return CookieAuthenticationDefaults.AuthenticationScheme;
+                };
+            });
 
         services.AddAuthorization(options =>
         {
