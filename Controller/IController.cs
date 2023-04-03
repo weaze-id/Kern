@@ -5,6 +5,5 @@ namespace Kern.Controller;
 
 public interface IController
 {
-    IServiceCollection AddServices(IServiceCollection services);
     IEndpointRouteBuilder MapEndpoints(IEndpointRouteBuilder endpoints);
 }

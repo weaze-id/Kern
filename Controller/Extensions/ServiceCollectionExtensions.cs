@@ -10,8 +10,6 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddController<T>(this IServiceCollection services) where T : IController
     {
         var controller = Activator.CreateInstance<T>();
-
-        controller.AddServices(services);
         controllers.Add(controller);
 
         return services;
