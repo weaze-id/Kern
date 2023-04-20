@@ -17,17 +17,13 @@ public static class ServiceCollectionExtensions
     {
         services.AddHttpContextAccessor();
 
-        var multiSchemePolicy = new AuthorizationPolicyBuilder(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                JwtBearerDefaults.AuthenticationScheme)
-            .RequireAuthenticatedUser()
-            .Build();
+        const string multiAuthenticationSchemeName = "MULTIPLE_AUTHENTICATION_SCHEME";
 
         services
-            .AddAuthentication("MULTIPLE_AUTHENTICATION_SCHEME")
+            .AddAuthentication(multiAuthenticationSchemeName)
             .AddJwtBearer()
             .AddCookie(options => cookieOptions?.Invoke(options))
-            .AddPolicyScheme("MULTIPLE_AUTHENTICATION_SCHEME", "MULTIPLE_AUTHENTICATION_SCHEME", options =>
+            .AddPolicyScheme(multiAuthenticationSchemeName, multiAuthenticationSchemeName, options =>
             {
                 options.ForwardDefaultSelector = context =>
                 {
@@ -41,9 +37,16 @@ public static class ServiceCollectionExtensions
                 };
             });
 
+
+        var multiAuthorizationSchemePolicy = new AuthorizationPolicyBuilder(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                JwtBearerDefaults.AuthenticationScheme)
+            .RequireAuthenticatedUser()
+            .Build();
+
         services.AddAuthorization(options =>
         {
-            options.DefaultPolicy = multiSchemePolicy;
+            options.DefaultPolicy = multiAuthorizationSchemePolicy;
             authorizationOptions?.Invoke(options);
         });
 
