@@ -1,37 +1,35 @@
 using System.Text;
-using System.Text.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Kern.AspNetCore.Extensions;
 
 public static class WebApplicationExtensions
 {
-    public static WebApplication UseSwaggerDocs(this WebApplication app)
+    public static IEndpointRouteBuilder UseSwaggerDocs(
+        this IEndpointRouteBuilder route,
+        IApplicationBuilder app,
+        IHostEnvironment environment)
     {
+        var wwwrootPath = Path.Combine(environment.ContentRootPath, "wwwroot");
+
         app.UseOutputCache();
 
-        app.Map("/docs/swagger.json", async () =>
+        route.Map("/docs/swagger.json", async () =>
         {
-            using var fileStream =
-                File.OpenRead(
-                    Path.Combine(app.Environment.ContentRootPath, "wwwroot", "json", "swagger.json"));
-
-            var json = await JsonSerializer.DeserializeAsync<object>(fileStream);
-            var jsonString = JsonSerializer.SerializeToUtf8Bytes(json);
-
-            return Results.Content(Encoding.UTF8.GetString(jsonString), "application/json", Encoding.UTF8);
+            var content = await File.ReadAllTextAsync(Path.Combine(wwwrootPath, "json", "swagger.json"));
+            return Results.Content(content, "application/json", Encoding.UTF8);
         }).CacheOutput();
 
-        app.Map("/docs", async () =>
+        route.Map("/docs", async () =>
         {
-            var content =
-                await File.ReadAllTextAsync(
-                    Path.Combine(app.Environment.ContentRootPath, "wwwroot", "html", "swagger.html"));
+            var content = await File.ReadAllTextAsync(Path.Combine(wwwrootPath, "html", "swagger.html"));
             return Results.Content(content, "text/html", Encoding.UTF8);
         }).CacheOutput();
 
-        return app;
+        return route;
     }
 }

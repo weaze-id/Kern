@@ -15,7 +15,7 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<S3UrlGenerator>();
 
-        services.AddTransient(serviceProvider =>
+        services.AddScoped(serviceProvider =>
         {
             var options = serviceProvider.GetRequiredService<IOptions<S3Options>>();
             var httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
