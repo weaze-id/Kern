@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <!-- Package information -->
+        <id>Kern.AspNetCore</id>
+        <version>1.0.0</version>
+        <authors>Edwin Sulaiman</authors>
+        <owners>Edwin Sulaiman</owners>
+        <licenseUrl>https://github.com/weaze-id/Kern/blob/main/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/weaze-id/Kern</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Library for ASP 7 Minimal API to make development faster</description>
+        <releaseNotes>Initial release</releaseNotes>
+
+        <!-- Package dependencies -->
+        <dependencies>
+            <dependency id="Newtonsoft.Json" version="12.0.3" />
+            <dependency id="MicroElements.Swashbuckle.FluentValidation" version="6.0.0-beta.1" />
+            <dependency id="Microsoft.AspNetCore.Authentication.JwtBearer" version="7.0.3" />
+            <dependency id="Minio" version="4.0.6" />
+            <dependency id="Swashbuckle.AspNetCore.SwaggerGen" version="6.5.0" />
+            <dependency id="System.IdentityModel.Tokens.Jwt" version="6.26.1" />
+        </dependencies>
+    </metadata>
+</package>

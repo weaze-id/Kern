@@ -16,10 +16,7 @@
     <PackageReference Include="Minio" Version="4.0.6" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.26.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Kern\Kern.csproj" />
+    <PackageReference Include="Kern" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
