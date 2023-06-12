@@ -1,9 +1,8 @@
-namespace Kern.Dtos.Response;
+namespace Kern.Response.Dtos;
 
-public class ResponseErrorDto
+public class ResponseDto
 {
     public string? Type { get; set; }
     public string? Title { get; set; }
     public int? Status { get; set; }
-    public object? Errors { get; set; }
 }

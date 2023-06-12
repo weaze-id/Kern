@@ -1,5 +1,5 @@
 using Kern.AspNetCore.Response.Models;
-using Kern.Dtos.Response;
+using Kern.Response.Dtos;
 using Microsoft.AspNetCore.Http;
 
 namespace Kern.AspNetCore.Response;
