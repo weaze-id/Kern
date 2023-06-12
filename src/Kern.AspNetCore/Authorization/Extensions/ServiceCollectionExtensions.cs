@@ -1,9 +1,7 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.Net.Http.Headers;
 
 namespace Kern.AspNetCore.Authorization.Extensions;
 
@@ -11,36 +9,20 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddAuthorization(
         this IServiceCollection services,
-        Action<CookieAuthenticationOptions>? cookieOptions = null,
-        Action<JwtBearerOptions, SecurityKey>? jwtOptions = null,
+        Action<AuthenticationBuilder> builder,
+        IEnumerable<string> authenticationScheme,
+        Func<HttpContext, string?> schemeSelector,
         Action<AuthorizationOptions>? authorizationOptions = null)
     {
-        services.AddHttpContextAccessor();
+        const string scheme = "MULTIPLE_AUTHENTICATION_SCHEME";
 
-        const string multiAuthenticationSchemeName = "MULTIPLE_AUTHENTICATION_SCHEME";
+        var authenticationBuilder = services
+            .AddAuthentication(scheme)
+            .AddPolicyScheme(scheme, scheme, options => options.ForwardDefaultSelector = schemeSelector);
 
-        services
-            .AddAuthentication(multiAuthenticationSchemeName)
-            .AddJwtBearer()
-            .AddCookie(options => cookieOptions?.Invoke(options))
-            .AddPolicyScheme(multiAuthenticationSchemeName, multiAuthenticationSchemeName, options =>
-            {
-                options.ForwardDefaultSelector = context =>
-                {
-                    string? authorizationHeader = context.Request.Headers[HeaderNames.Authorization];
-                    if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
-                    {
-                        return JwtBearerDefaults.AuthenticationScheme;
-                    }
+        builder.Invoke(authenticationBuilder);
 
-                    return CookieAuthenticationDefaults.AuthenticationScheme;
-                };
-            });
-
-
-        var multiAuthorizationSchemePolicy = new AuthorizationPolicyBuilder(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                JwtBearerDefaults.AuthenticationScheme)
+        var multiAuthorizationSchemePolicy = new AuthorizationPolicyBuilder(authenticationScheme.ToArray())
             .RequireAuthenticatedUser()
             .Build();
 
@@ -49,10 +31,6 @@ public static class ServiceCollectionExtensions
             options.DefaultPolicy = multiAuthorizationSchemePolicy;
             authorizationOptions?.Invoke(options);
         });
-
-        services
-            .AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
-            .Configure<SecurityKey>((options, securityKey) => jwtOptions?.Invoke(options, securityKey));
 
         return services;
     }
