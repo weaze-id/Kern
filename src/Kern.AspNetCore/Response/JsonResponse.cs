@@ -33,7 +33,7 @@ public static class JsonResponse
     private static readonly ResponseModel NotFoundResponse = new()
     {
         Type = "https://tools.ietf.org/rfc/rfc7231#section-6.5.4",
-        Title = "Bad Found"
+        Title = "Not Found"
     };
 
     private static readonly ResponseModel ConflictResponse = new()
