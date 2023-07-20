@@ -11,11 +11,5 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Library for ASP 7 Minimal API to make development faster</description>
         <releaseNotes>Initial release</releaseNotes>
-
-        <!-- Package dependencies -->
-        <dependencies>
-            <dependency id="Microsoft.Extensions.Hosting" version="7.0.1" />
-            <dependency id="FluentValidation" version="11.4.0" />
-        </dependencies>
     </metadata>
 </package>
