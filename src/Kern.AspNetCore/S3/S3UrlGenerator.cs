@@ -11,7 +11,7 @@ public class S3UrlGenerator
     public S3UrlGenerator(IOptions<S3Options> options)
     {
         _options = options.Value;
-        _urlPrefix = $"{(_options.WithSSL ? "https" : "http")}://{_options.Endpoint}/{_options.BucketName}/";
+        _urlPrefix = $"{(_options.WithSSL ? "https" : "http")}://{_options.ReadEndpoint}/{_options.BucketName}/";
     }
 
     /// <summary>

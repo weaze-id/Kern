@@ -24,7 +24,7 @@ public static class ServiceCollectionExtensions
             var httpClient = httpClientFactory.CreateClient("minio");
 
             var minioClient = new MinioClient()
-                .WithEndpoint(optionsValue.Endpoint)
+                .WithEndpoint(optionsValue.WriteEndpoint)
                 .WithCredentials(optionsValue.AccessKey, optionsValue.SecretKey)
                 .WithSSL(optionsValue.WithSSL)
                 .WithHttpClient(httpClient)
