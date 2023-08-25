@@ -8,14 +8,14 @@
 
   <PropertyGroup>
     <PackageId>Kern.AspNetCore</PackageId>
-    <Version>1.0.3</Version>
+    <Version>1.1.0</Version>
     <Authors>Edwin Sulaiman</Authors>
     <Owners>Edwin Sulaiman</Owners>
     <PackageLicenseUrl>https://github.com/weaze-id/Kern/blob/main/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/weaze-id/Kern</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>Library for ASP 7 Minimal API to make development faster</Description>
-    <PackageReleaseNotes>Fix nuget</PackageReleaseNotes>
+    <PackageReleaseNotes>Split S3 endpoint to read and write</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
