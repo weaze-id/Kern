@@ -8,14 +8,14 @@
 
   <PropertyGroup>
     <PackageId>Kern.AspNetCore</PackageId>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <Authors>Edwin Sulaiman</Authors>
     <Owners>Edwin Sulaiman</Owners>
     <PackageLicenseUrl>https://github.com/weaze-id/Kern/blob/main/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/weaze-id/Kern</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>Library for ASP 7 Minimal API to make development faster</Description>
-    <PackageReleaseNotes>Split S3 endpoint to read and write</PackageReleaseNotes>
+    <PackageReleaseNotes>Remove authorization service collection extensions</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,10 +24,8 @@
 
   <ItemGroup>
     <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="6.0.0-beta.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.3" />
-    <PackageReference Include="Minio" Version="4.0.6" />
+    <PackageReference Include="Minio" Version="5.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.26.1" />
     <PackageReference Include="Kern" Version="1.0.0" />
   </ItemGroup>
 
