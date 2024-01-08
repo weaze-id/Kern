@@ -3,7 +3,7 @@ namespace Kern.AspNetCore.Constants;
 public class StringConstants
 {
     public const string SWAGGER_DESCRIPTION =
-        @"# Introduction
+@"# Introduction
 The {{Title}} API follows the general patterns of REST.
 You can use the resources of a {{Title}} by making HTTPS requests to URLs that represent those resources. You can find description of all the endpoints here.
 
@@ -13,9 +13,9 @@ Postman is a powerful HTTP client for testing RESTful APIs by displaying request
 
 These are steps you need to take to start testing {{Title}} API via Postman:
 - Download and install Postman. You can get it here: [https://www.getpostman.com](https://www.getpostman.com)
-- Get [{{Title}} API Postman Collection](/swagger/v1/swagger.json) and import it into Postman.
+- Get [{{Title}} API Postman Collection](/swagger/{{Version}}/swagger.json) and import it into Postman.
 - Define variables used in postman collection. 
-    For example, in {{Title}} production environment for {{Title}} API v1.0 you should define baseUrl variable.
+    For example, in {{Title}} production environment for {{Title}} API {{Version}} you should define baseUrl variable.
     It is useful to configure variables in postman environments so you will not have to redefine the values for each request manually.
     [Learn more about Postman environments](https://learning.postman.com/docs/sending-requests/managing-environments/).
 - Configure the Postman Authorization header. Each request to {{Title}} API should contain a token in request header.

@@ -20,7 +20,8 @@ public static class ServiceCollectionExtensions
                 Title = configuration["Swagger:Title"],
                 Description = StringConstants.SWAGGER_DESCRIPTION
                     .Replace("\r", "")
-                    .Replace("{{Title}}", configuration["Swagger:Title"]),
+                    .Replace("{{Title}}", configuration["Swagger:Title"])
+                    .Replace("{{Version}}", configuration["Swagger:Version"]),
                 Version = configuration["Swagger:Version"]
             });
         });
