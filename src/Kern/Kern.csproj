@@ -8,14 +8,14 @@
 
   <PropertyGroup>
     <PackageId>Kern</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <Authors>Edwin Sulaiman</Authors>
     <Owners>Edwin Sulaiman</Owners>
     <PackageLicenseUrl>https://github.com/weaze-id/Kern/blob/main/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/weaze-id/Kern</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>Library for ASP 7 Minimal API to make development faster</Description>
-    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageReleaseNotes>Add enum utils</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
