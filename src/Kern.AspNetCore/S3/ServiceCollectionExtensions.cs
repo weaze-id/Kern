@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Minio;
 
-namespace Kern.AspNetCore.S3.Extensions;
+namespace Kern.AspNetCore.S3;
 
 public static class ServiceCollectionExtensions
 {
@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
     {
         services.Configure<S3Options>(configuration.GetSection(S3Options.OptionName));
 
-        services.AddHttpClient("minio");
+        services.AddHttpClient("s3");
 
         services.AddSingleton<S3UrlGenerator>();
 
@@ -21,7 +21,7 @@ public static class ServiceCollectionExtensions
             var httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
 
             var optionsValue = options.Value;
-            var httpClient = httpClientFactory.CreateClient("minio");
+            var httpClient = httpClientFactory.CreateClient("s3");
 
             var minioClient = new MinioClient()
                 .WithEndpoint(optionsValue.WriteEndpoint)
