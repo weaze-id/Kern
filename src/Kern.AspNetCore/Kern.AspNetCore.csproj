@@ -1,21 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageId>Kern.AspNetCore</PackageId>
-    <Version>1.3.0</Version>
+    <Version>1.4.0</Version>
     <Authors>Edwin Sulaiman</Authors>
     <Owners>Edwin Sulaiman</Owners>
     <PackageLicenseUrl>https://github.com/weaze-id/Kern/blob/main/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/weaze-id/Kern</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Description>Library for ASP 7 Minimal API to make development faster</Description>
-    <PackageReleaseNotes>Remove swagger support</PackageReleaseNotes>
+    <Description>Library for ASP Minimal API to make development faster</Description>
+    <PackageReleaseNotes>Remove endpoint feature</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,8 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Minio" Version="5.0.0" />
-    <PackageReference Include="Kern" Version="1.0.0" />
+    <PackageReference Include="Minio" Version="6.0.2" />
+    <PackageReference Include="Kern" Version="1.2.0" />
   </ItemGroup>
 
 </Project>

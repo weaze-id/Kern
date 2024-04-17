@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Options;
 using Minio;
+using Minio.DataModel.Args;
 
 namespace Kern.AspNetCore.S3;
 
@@ -7,10 +8,10 @@ public class S3
 {
     public static Dictionary<string, string> PublicReadonlyMetadata = new() { { "x-amz-acl", "public-read" } };
 
-    private readonly MinioClient _minioClient;
+    private readonly IMinioClient _minioClient;
     private readonly S3Options _options;
 
-    public S3(MinioClient minioClient, IOptions<S3Options> options)
+    public S3(IMinioClient minioClient, IOptions<S3Options> options)
     {
         _minioClient = minioClient;
         _options = options.Value;
