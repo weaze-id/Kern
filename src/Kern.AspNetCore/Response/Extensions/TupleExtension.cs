@@ -11,7 +11,7 @@ public static class TupleExtension
         var (result, validationResult, error) = tuple;
         if (validationResult != null)
         {
-            return validationResult.Response();
+            return JsonResult.BadRequest(validationResult: validationResult);
         }
 
         if (error != null)
@@ -19,7 +19,7 @@ public static class TupleExtension
             return error.Response();
         }
 
-        return JsonResponse.Success(data: result);
+        return JsonResult.Success(data: result);
     }
 
     public static IResult Response<T>(this (T?, ErrorBase?) tuple) where T : class
@@ -30,7 +30,7 @@ public static class TupleExtension
             return error.Response();
         }
 
-        return JsonResponse.Success(data: result);
+        return JsonResult.Success(data: result);
     }
 
     public static IResult Response(this (ValidationResult?, ErrorBase?) tuple)
@@ -38,7 +38,7 @@ public static class TupleExtension
         var (validationResult, error) = tuple;
         if (validationResult != null)
         {
-            return validationResult.Response();
+            return JsonResult.BadRequest(validationResult: validationResult);
         }
 
         if (error != null)
@@ -46,6 +46,6 @@ public static class TupleExtension
             return error.Response();
         }
 
-        return JsonResponse.Success();
+        return JsonResult.Success();
     }
 }
