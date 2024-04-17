@@ -17,6 +17,63 @@ public class S3
     }
 
     /// <summary>
+    /// Retrieves an object from the specified bucket asynchronously.
+    /// </summary>
+    /// <param name="objectName">The name of the object to retrieve.</param>
+    /// <param name="offset">Optional. The starting offset of the object to retrieve. Default is null.</param>
+    /// <param name="length">Optional. The length of the object to retrieve. Default is null.</param>
+    /// <returns>
+    /// A <see cref="Stream"/> containing the retrieved object.
+    /// </returns>
+    public async Task<Stream?> GetObjectAsync(
+        string objectName,
+        long? offset = null,
+        long? length = null)
+    {
+        // Create a memory stream to store the object data
+        var memoryStream = new MemoryStream();
+
+        try
+        {
+            // Prepare arguments to check if the object exists
+            var statObjectArgs = new StatObjectArgs()
+                .WithBucket(_options.BucketName)
+                .WithObject(objectName);
+
+            // Check if the object exists
+            await _minioClient.StatObjectAsync(statObjectArgs);
+
+            // Prepare arguments to get the object and copy it to the memory stream
+            var getObjectArgs = new GetObjectArgs()
+                .WithBucket(_options.BucketName)
+                .WithObject(objectName)
+                .WithCallbackStream(async (stream) => await stream.CopyToAsync(memoryStream));
+
+            // If offset and length are specified, set them in the arguments
+            if (offset != null && length != null)
+            {
+                getObjectArgs.WithOffsetAndLength(
+                    offset.GetValueOrDefault(),
+                    length.GetValueOrDefault());
+            }
+
+            // Get the object asynchronously and copy it to the memory stream
+            await _minioClient.GetObjectAsync(getObjectArgs).ConfigureAwait(false);
+
+            // Return the memory stream containing the retrieved object data
+            return memoryStream;
+        }
+        catch
+        {
+            // Dispose the memory stream.
+            await memoryStream.DisposeAsync();
+
+            // If an exception occurs, return null
+            return null;
+        }
+    }
+
+    /// <summary>
     /// Stores an object in the S3 bucket asynchronously.
     /// </summary>
     /// <param name="objectName">The name of the object to store.</param>
