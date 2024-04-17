@@ -1,11 +1,13 @@
+using System.Security.Cryptography;
+
 namespace Kern.Utils;
 
 public static class CodeUtils
 {
-    private static Random random = new Random();
-    private static string numberChars = "0123456789";
-    private static string alphabetChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    private static string aplhabetAndNumberChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private static readonly RandomNumberGenerator rng = RandomNumberGenerator.Create();
+    private static readonly string numberChars = "0123456789";
+    private static readonly string alphabetChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private static readonly string aplhabetAndNumberChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
     public static string GenerateRandomNumberCode(int codeLength)
     {
@@ -24,10 +26,14 @@ public static class CodeUtils
 
     private static string GenerateRandomCode(string chars, int codeLength)
     {
-        Span<char> code = new char[codeLength];
-        for (int i = 0; i < codeLength; i++)
+        Span<byte> data = stackalloc byte[codeLength];
+        rng.GetBytes(data);
+
+        Span<char> code = stackalloc char[codeLength];
+        for (var i = 0; i < codeLength; i++)
         {
-            code[i] = chars[random.Next(chars.Length)];
+            var index = data[i] % chars.Length;
+            code[i] = chars[index];
         }
 
         return new string(code);
