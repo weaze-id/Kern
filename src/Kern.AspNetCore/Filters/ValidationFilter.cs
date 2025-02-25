@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Kern.AspNetCore;
+namespace Kern.AspNetCore.Filters;
 
 public static class ValidationFilterExtensions
 {
