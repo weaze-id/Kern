@@ -21,7 +21,7 @@ public class QueueHost(Queue queue, ILogger<QueueHost> logger) : IHostedService
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                queue.ConsumeQueue();
+                await queue.ConsumeQueueAsync();
                 await Task.Delay(1000);
             }
         }, cancellationToken);

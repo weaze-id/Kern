@@ -20,14 +20,32 @@ public class Queue(IServiceScopeFactory serviceScopeFactory, ILogger<Queue> logg
     public readonly ConcurrentDictionary<string, Task> processes = new();
 
     /// <summary>
+    /// A semaphore that restricts access to a single process at a time for modifying queues.
+    /// </summary>
+    private readonly SemaphoreSlim queuesSemaphore = new(1, 1);
+
+    /// <summary>
+    /// A semaphore that restricts access to a single process at a time for modifying processes.
+    /// </summary>
+    private readonly SemaphoreSlim processesSemaphore = new(1, 1);
+
+    /// <summary>
     /// Enqueues a task of type <typeparamref name="T"/> into the specified queue group.
     /// </summary>
     /// <typeparam name="T">Type of the task, which must implement <see cref="IQueueTask"/></typeparam>
     /// <param name="groupId">The ID of the queue group (default is "default").</param>
-    public void QueueTask<T>(string groupId = "default") where T : IQueueTask
+    public async Task QueueTaskAsync<T>(string groupId = "default") where T : IQueueTask
     {
-        var queue = queues.GetOrAdd(groupId, new ConcurrentQueue<Func<Task>>());
-        queue.Enqueue(CreateQueueTask<T>);
+        await queuesSemaphore.WaitAsync();
+        try
+        {
+            var queue = queues.GetOrAdd(groupId, new ConcurrentQueue<Func<Task>>());
+            queue.Enqueue(CreateQueueTask<T>);
+        }
+        finally
+        {
+            queuesSemaphore.Release();
+        }
     }
 
     /// <summary>
@@ -37,23 +55,43 @@ public class Queue(IServiceScopeFactory serviceScopeFactory, ILogger<Queue> logg
     /// <typeparam name="TPayload">Type of the payload.</typeparam>
     /// <param name="payload">The payload for the task.</param>
     /// <param name="groupId">The ID of the queue group (default is "default").</param>
-    public void QueueTaskWithPayload<T, TPayload>(TPayload payload, string groupId = "default") where T : IQueueTaskWithPayload<TPayload>
+    public async Task QueueTaskWithPayloadAsync<T, TPayload>(TPayload payload, string groupId = "default") where T : IQueueTaskWithPayload<TPayload>
     {
-        var queue = queues.GetOrAdd(groupId, new ConcurrentQueue<Func<Task>>());
-        queue.Enqueue(() => CreateQueueTaskWithPayload<T, TPayload>(payload));
+        await queuesSemaphore.WaitAsync();
+        try
+        {
+            var queue = queues.GetOrAdd(groupId, new ConcurrentQueue<Func<Task>>());
+            queue.Enqueue(() => CreateQueueTaskWithPayload<T, TPayload>(payload));
+        }
+        finally
+        {
+            queuesSemaphore.Release();
+        }
     }
 
     /// <summary>
     /// Starts processing tasks in all queue groups that are not already running.
     /// </summary>
-    public void ConsumeQueue()
+    public async Task ConsumeQueueAsync()
     {
-        foreach (var queue in queues)
+        await queuesSemaphore.WaitAsync();
+        await processesSemaphore.WaitAsync();
+
+        try
         {
-            if (!processes.ContainsKey(queue.Key) && !queue.Value.IsEmpty)
+            var queuesToProcess = queues.Where(e =>
+                !e.Value.IsEmpty &&
+                !processes.ContainsKey(e.Key));
+
+            foreach (var queue in queuesToProcess)
             {
-                processes.GetOrAdd(queue.Key, Task.Run(() => StartGroupProcess(queue.Key)));
+                processes.TryAdd(queue.Key, Task.Run(() => StartGroupProcess(queue.Key)));
             }
+        }
+        finally
+        {
+            queuesSemaphore.Release();
+            processesSemaphore.Release();
         }
     }
 
@@ -73,7 +111,30 @@ public class Queue(IServiceScopeFactory serviceScopeFactory, ILogger<Queue> logg
             }
         }
 
-        processes.Remove(groupId, out _);
+        await queuesSemaphore.WaitAsync();
+        try
+        {
+            queues.Remove(groupId, out var removedQueue);
+            if (removedQueue != null && !removedQueue.IsEmpty)
+            {
+                queues.TryAdd(groupId, removedQueue);
+            }
+        }
+        finally
+        {
+            queuesSemaphore.Release();
+        }
+
+        await processesSemaphore.WaitAsync();
+        try
+        {
+            processes.Remove(groupId, out _);
+        }
+        finally
+        {
+            processesSemaphore.Release();
+        }
+
         logger.LogInformation($"Queue process for '{groupId}' is done");
     }
 
@@ -87,7 +148,15 @@ public class Queue(IServiceScopeFactory serviceScopeFactory, ILogger<Queue> logg
         using var scope = serviceScopeFactory.CreateScope();
         if (scope.ServiceProvider.GetService<T>() is IQueueTask queueTask)
         {
-            await queueTask.InvokeAsync();
+            try
+            {
+                await queueTask.InvokeAsync();
+            }
+            catch
+            {
+                logger.LogError(message: $"Unhandled exception occured while running queue task '{type}'");
+            }
+
             return;
         }
 
@@ -106,7 +175,15 @@ public class Queue(IServiceScopeFactory serviceScopeFactory, ILogger<Queue> logg
         using var scope = serviceScopeFactory.CreateScope();
         if (scope.ServiceProvider.GetService<T>() is IQueueTaskWithPayload<TPayload> queueTask)
         {
-            await queueTask.InvokeAsync(payload);
+            try
+            {
+                await queueTask.InvokeAsync(payload);
+            }
+            catch
+            {
+                logger.LogError(message: $"Unhandled exception occured while running queue task '{type}'");
+            }
+
             return;
         }
 
