@@ -36,7 +36,7 @@ public class PipelineRunner<TIn, TOut>
     /// <typeparam name="TNext">The output type of the next step.</typeparam>
     /// <param name="next">A function that takes the current output and produces the next step asynchronously with error handling.</param>
     /// <returns>A new <see cref="PipelineRunner{TIn, TNext}"/> with the step added.</returns>
-    public PipelineRunner<TIn, TNext> Then<TNext>(Func<TOut, Task<PipelineResult<TNext>>> next)
+    public PipelineRunner<TIn, TNext> AddStep<TNext>(Func<TOut, Task<PipelineResult<TNext>>> next)
     {
         return new PipelineRunner<TIn, TNext>(async input =>
         {
@@ -56,7 +56,7 @@ public class PipelineRunner<TIn, TOut>
     /// <returns>A new <see cref="PipelineRunner{TIn, TNext}"/> with the step added.</returns>
     public PipelineRunner<TIn, TNext> AddStep<TNext>(Func<TOut, PipelineResult<TNext>> next)
     {
-        return Then(x => Task.FromResult(next(x)));
+        return AddStep(x => Task.FromResult(next(x)));
     }
 
     /// <summary>
@@ -67,7 +67,7 @@ public class PipelineRunner<TIn, TOut>
     /// <returns>A new <see cref="PipelineRunner{TIn, TNext}"/> with the step added.</returns>
     public PipelineRunner<TIn, TNext> AddStep<TNext>(Func<TOut, Task<TNext>> next)
     {
-        return Then<TNext>(async x => PipelineResult<TNext>.Success(await next(x)));
+        return AddStep<TNext>(async x => PipelineResult<TNext>.Success(await next(x)));
     }
 
     /// <summary>
